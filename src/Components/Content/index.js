@@ -1,18 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+
 
 const drawerWidth = 240;
 
@@ -31,34 +27,20 @@ const styles = theme => ({
     width: drawerWidth,
   },
   content: {
-    flexGrow: 1,
+    flexGrow: 0,
     padding: theme.spacing.unit * 3,
   },
   toolbar: theme.mixins.toolbar,
 });
 
-function ClippedDrawer(props) {
-  const { classes } = props;
 
-  return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <AppBar position="fixed" className={classes.appBar}>
-        <Toolbar>
-          <Typography variant="h5" color="inherit" noWrap>
-            Clipped drawer
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      
-      
-      <Drawer
+export default withStyles(styles)(({classes}) => 
+
+<div className={classes.root}>
+    <Drawer
         className={classes.drawer}
         variant="permanent"
-        classes={{
-          paper: classes.drawerPaper,
-        }}
-      >
+        classes={{ paper: classes.drawerPaper, }}>
         <div className={classes.toolbar} />
         <List>
           {['Make Payment', 'View Transaction'].map((text, index) => (
@@ -69,6 +51,7 @@ function ClippedDrawer(props) {
           ))}
         </List>
       </Drawer>
+
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Typography paragraph>
@@ -95,12 +78,4 @@ function ClippedDrawer(props) {
           accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam ultrices sagittis orci a.
         </Typography>
       </main>
-    </div>
-  );
-}
-
-ClippedDrawer.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(ClippedDrawer);
+    </div>)
