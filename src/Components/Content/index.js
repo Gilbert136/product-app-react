@@ -30,7 +30,7 @@ export default withStyles(styles)(({classes}) =>
             <div className={classes.toolbar} />
             <Search />
             <Table />
-             <Dialog />
+            <Dialog />
         </div>
     </div>
 )

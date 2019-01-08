@@ -1,3 +1,4 @@
-import Header from './Header';
+import MainLayout from './MainLayout';
+import SimpleLayout from './SimpleLayout';
 
-export { Header }
+export { MainLayout, SimpleLayout }

@@ -21,14 +21,15 @@ const styles = theme => ({
 
 
 export default withStyles(styles)(
-    ({classes}) => 
+    ({classes, username }) => 
     <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
             <IconButton aria-haspopup="true" color="inherit"> <WorkIcon /></IconButton>
             <Typography variant="h5" color="inherit" noWrap> Proapp </Typography>
             <div className={classes.grow} />
-            <Typography variant="h6" color="inherit" noWrap> Kobby </Typography>
+            <Typography variant="h6" color="inherit" noWrap> {username} </Typography>
             <IconButton aria-haspopup="true" color="inherit"> <AccountCircle /></IconButton>
+            
             <IconButton aria-haspopup="true"  color="inherit"><MoreIcon /></IconButton>
         
         </Toolbar>
