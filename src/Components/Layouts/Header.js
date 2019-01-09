@@ -3,10 +3,10 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import MoreIcon from '@material-ui/icons/MoreVert';
 import WorkIcon from '@material-ui/icons/Work';
 import { withStyles } from '@material-ui/core/styles';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import Menu from '../Content/Menu';
 
 
 const styles = theme => ({
@@ -29,9 +29,7 @@ export default withStyles(styles)(
             <div className={classes.grow} />
             <Typography variant="h6" color="inherit" noWrap> {username} </Typography>
             <IconButton aria-haspopup="true" color="inherit"> <AccountCircle /></IconButton>
-            
-            <IconButton aria-haspopup="true"  color="inherit"><MoreIcon /></IconButton>
-        
+            <Menu />
         </Toolbar>
     </AppBar>
 )

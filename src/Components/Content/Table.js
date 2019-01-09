@@ -7,10 +7,11 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import Visibility from '@material-ui/icons/Visibility';
+// import IconButton from '@material-ui/core/IconButton';
+// import DeleteIcon from '@material-ui/icons/Delete';
 import Button from '@material-ui/core/Button';
+import TDialog from './TDialog';
+
 
 
 
@@ -69,8 +70,8 @@ function SimpleTable(props) {
                 <TableCell align="right">{row.carbs}</TableCell>
                 <TableCell align="right"> <Button variant="outlined"> Make Payment </Button></TableCell>
                 <TableCell align="right">
-                  <IconButton aria-label="Delete" className={classes.margin}> <Visibility /></IconButton>
-                  <IconButton aria-label="Delete" className={classes.margin}> <DeleteIcon /></IconButton>
+                <TDialog />                  
+                {/* <IconButton aria-label="Delete"> <DeleteIcon /></IconButton> */}
                 </TableCell>
               </TableRow>
             );
