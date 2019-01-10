@@ -7,6 +7,8 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import WorkIcon from '@material-ui/icons/Work';
+import { Link } from 'react-router-dom'
+
 
 const styles = {
   root: {
@@ -30,8 +32,8 @@ function ButtonAppBar(props) {
             <IconButton aria-haspopup="true" color="inherit"> <WorkIcon /></IconButton>
             <Typography variant="h5" color="inherit" noWrap> Proapp </Typography>
             <div className={classes.grow} />
-            <Button  variant="contained">Login</Button>
-            <Button color="inherit">Register</Button>
+            <Link to='/Login'><Typography align="center"> <Button variant="contained">Login</Button></Typography></Link>
+            <Link to='/Register'><Typography align="center"> <Button color="inherit">Register</Button></Typography></Link>
             </Toolbar>
       </AppBar>
     </div>

@@ -9,7 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 // import IconButton from '@material-ui/core/IconButton';
 // import DeleteIcon from '@material-ui/icons/Delete';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 import TDialog from './TDialog';
 
 
@@ -27,23 +27,10 @@ const styles = theme => ({
   },
 });
 
-let id = 0;
-function createData(name, calories, fat, carbs, protein) {
-  id += 1;
-  return { id, name, calories, fat, carbs, protein };
-}
 
-const rows = [
-  createData('Visa Card', 159, 6.0, 24, 'Unpaid'),
-  createData('MTN Momo', 237, 9.0, 37, 'Paid'),
-  createData('Master Card', 262, 16.0, 24, 'Unpaid.'),
-  createData('Express', 305, 3.7, 67, 'Paid'),
-  createData('Android Wallet', 356, 16.0, 49, 'Paid'),
-];
 
 function SimpleTable(props) {
-  const { classes } = props;
-
+  const { classes, transactions, onDelete, onMakePayment } = props;
   return (
     <Paper className={classes.root}>
       <Table className={classes.table}>
@@ -59,20 +46,15 @@ function SimpleTable(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map(row => {
+          {transactions.map(transaction => {
             return (
-              <TableRow key={row.id}>
-                <TableCell component="th" scope="row">
-                  {row.name}
-                </TableCell>
-                <TableCell align="right">{row.calories}</TableCell>
-                <TableCell align="right">{row.fat}</TableCell>
-                <TableCell align="right">{row.carbs}</TableCell>
-                <TableCell align="right"> <Button variant="outlined"> Make Payment </Button></TableCell>
-                <TableCell align="right">
-                <TDialog />                  
-                {/* <IconButton aria-label="Delete"> <DeleteIcon /></IconButton> */}
-                </TableCell>
+              <TableRow key={transaction.account}>
+                <TableCell component="th" scope="transaction">{transaction.provider}</TableCell>
+                <TableCell align="right">{transaction.amount}</TableCell>
+                <TableCell align="right">{transaction.reference}</TableCell>
+                <TableCell align="right">{transaction.account}</TableCell>
+                <TableCell align="right">{transaction.paid ? "Paid" : "Not paid"} </TableCell>
+                <TableCell align="right"><TDialog transaction={transaction} onDelete={onDelete} onMakePayment={onMakePayment}/></TableCell>
               </TableRow>
             );
           })}

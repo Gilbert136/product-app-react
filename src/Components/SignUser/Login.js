@@ -15,9 +15,7 @@ import Button from '@material-ui/core/Button';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-
-
-
+import { Link } from 'react-router-dom';
 
 
 
@@ -41,11 +39,11 @@ const styles = theme => ({
 
   class InputAdornments extends React.Component {
     state = {
-      amount: '',
+      username: '',
       password: '',
-      weight: '',
-      weightRange: '',
       showPassword: false,
+      usernameError: '',
+      passwordError: '',
     };
   
     handleChange = prop => event => {
@@ -55,10 +53,44 @@ const styles = theme => ({
     handleClickShowPassword = () => {
       this.setState(state => ({ showPassword: !state.showPassword }));
     };
+
+    handleSubmit = () => {
+      const { username, password } = this.state;
+      const validate = this.handleValidation(username, password);
+
+      if(!validate){
+        this.props.onSubmit(username, password)
+        this.setState({username: '',
+        password: '',
+        showPassword: false,
+        usernameError: '',
+        passwordError: '',})
+      }
+    }
+
+    handleValidation = (username, password) => {
+      let error = false;
+      const errors = {};
+
+      if(username.length === 0){ error = true; errors.usernameError = 'empty'}  
+      if(password.length === 0){ error = true; errors.passwordError = 'empty'}
+      
+      //i have to reset the whole state with new object
+      if(error){
+        this.setState({
+          ...this.state, 
+          ...errors
+        })
+      }
+  
+      return error
+
+    }
+
   
     render() {
         const { classes } = this.props;
-    
+        const { username, password, showPassword, usernameError, passwordError } = this.state;
 
 
   return (
@@ -75,34 +107,37 @@ const styles = theme => ({
                 className={classNames(classes.margin, classes.textField)}
                 label="Username"
                 type="text"
+                value={username}
+                error={!!usernameError}
+                helperText={usernameError}
+                onChange={this.handleChange('username')}
                 fullWidth/>
-<TextField
-          id="filled-adornment-password"
-          className={classNames(classes.margin, classes.textField)}
-          variant="filled"
-          type={this.state.showPassword ? 'text' : 'password'}
-          label="Password"
-          value={this.state.password}
-          onChange={this.handleChange('password')}
-          fullWidth
-          InputProps={{
-            endAdornment: (
-              <InputAdornment variant="filled" position="end">
-                <IconButton
-                  aria-label="Toggle password visibility"
-                  onClick={this.handleClickShowPassword}
-                >
-                  {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
+        <TextField
+                  id="filled-adornment-password"
+                  className={classNames(classes.margin, classes.textField)}
+                  variant="filled"
+                  type={showPassword ? 'text' : 'password'}
+                  label="Password"
+                  value={password}
+                  error={!!passwordError}
+                  helperText={passwordError}
+                  onChange={this.handleChange('password')}
+                  fullWidth
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment variant="filled" position="end">
+                        <IconButton aria-label="Toggle password visibility" onClick={this.handleClickShowPassword}>
+                          {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
 
-<Button variant="contained" size="large" color="primary" className={classes.margin} fullWidth>Login</Button>
+    <Button variant="contained" size="large" color="primary" className={classes.margin} onClick={this.handleSubmit} fullWidth>Login</Button>
     <Typography align="center"> Don't have an account?</Typography>
-    <Typography align="center"> <Button color="primary">REGISTER NOW</Button></Typography>
-    
+    <Link to='/Register'><Typography align="center"> <Button color="primary">REGISTER NOW</Button></Typography></Link>
+
 
         </Paper>
         </Grid>

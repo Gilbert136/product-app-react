@@ -39,15 +39,15 @@ const styles = theme => ({
 
 const ranges = [
   {
-    value: 'MTN-Momo',
+    value: 'MTN Momo',
     label: 'MTN Momo',
   },
   {
-    value: 'Visa-Card',
+    value: 'Visa Card',
     label: 'Visa Card',
   },
   {
-    value: 'Master-Card',
+    value: 'Master Card',
     label: 'Master Card',
   },
 ];
@@ -55,8 +55,21 @@ const ranges = [
 class FormDialog extends React.Component {
   state = {
     open: false,
-    weightRange: '',
-    multiLine: '',
+    transaction: {
+      provider: '',
+      amount: '',
+      reference: '',
+      account: '',
+      narration: '',
+      paid: false,
+    },
+    transactionError:{
+      providerError: '',
+      amountError: '',
+      referenceError: '',
+      accountError: '',
+      narrationError:'',
+    }
   };
 
   handleClickOpen = () => {
@@ -67,12 +80,49 @@ class FormDialog extends React.Component {
     this.setState({ open: false });
   };
 
-  handleChange = prop => event => {
-    this.setState({ [prop]: event.target.value });
+  handleSubmit = () => {
+    const { transaction } = this.state;
+    const validate = this.handleValidation(transaction)
+
+    if(!validate){
+      this.props.onCreate({...transaction, id: transaction.account});
+      this.setState({ open: false, 
+            transaction: { provider: '', amount: '',reference: '',account: '', narration: '', paid: false},
+            transactionError:{ providerError: '', amountError: '', referenceError: '', accountError: '', narrationError:''}
+          })
+    }
+  };
+
+  handleValidation = (transaction) => {
+    let error = false;
+    const errors = {};
+    if(transaction.provider.length === 0){ error = true; errors.providerError = 'empty'} 
+    if(transaction.amount.length === 0){ error = true; errors.amountError = 'empty'}
+    if(transaction.reference.length === 0){ error = true; errors.referenceError = 'empty'}
+    if(transaction.account.length === 0){ error = true; errors.accountError = 'empty'}
+    if(transaction.narration.length === 0){ error = true; errors.narrationError = 'empty'}
+
+    if(error){
+      this.setState({transactionError : errors })
+    }
+
+    return error
+  }
+
+  handleChange = name => ({target: {value}}) => {
+    this.setState({ 
+      transaction: {
+        ...this.state.transaction,
+        [name]: value 
+      }
+    });
   };
 
   render() {
     const { classes } = this.props;
+    const { open, 
+            transaction: { provider, amount, reference, account, narration }, 
+            transactionError: { providerError, amountError, referenceError, accountError, narrationError }, } = this.state
 
     return (
       
@@ -82,7 +132,7 @@ class FormDialog extends React.Component {
         </Fab>
 
 
-        <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
+        <Dialog open={open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
           <DialogTitle id="form-dialog-title">+ Add Transaction</DialogTitle>
           <DialogContent>
             <DialogContentText>
@@ -92,11 +142,12 @@ class FormDialog extends React.Component {
           <TextField
             label="Pay Provider"
             className={classNames(classes.margin, classes.textField)}
-            value={this.state.weightRange}
-            onChange={this.handleChange('weightRange')}
+            value={provider}
+            onChange={this.handleChange('provider')}
             fullWidth
-            select
-            >
+            error={!!providerError}
+            helperText={providerError}
+            select>
             {ranges.map(option => ( <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem> ))}
           </TextField>
 
@@ -104,26 +155,35 @@ class FormDialog extends React.Component {
             margin="dense"
             id="amount"
             label="Amount"
+            value={amount}
+            onChange={this.handleChange('amount')}
             type="text"
+          error={!!amountError}
+            helperText={amountError}
             fullWidth/>
 
         <TextField
           id="narrator"
-          label="Narrator"
+          label="Narration"
           multiline
           rowsMax="4"
-          value={this.state.multiline}
-          onChange={this.handleChange('multiline')}
+          value={narration}
+          onChange={this.handleChange('narration')}
           className={classes.textField}
           margin="normal"
-          helperText="Add a brief description"
+          error={!!narrationError}
+          helperText={narrationError }
           fullWidth/>
 
           <TextField
             margin="dense"
             id="ref-number"
             label="Reference Number"
+            value={reference}
+            onChange={this.handleChange('reference')}
             type="text"
+            error={!!referenceError}
+            helperText={referenceError}
             fullWidth/>
 
           <TextField
@@ -131,16 +191,16 @@ class FormDialog extends React.Component {
             id="acc-number"
             label="Account Number"
             type="number"
+            value={account}
+            onChange={this.handleChange('account')}
+            error={!!accountError}
+            helperText={accountError}
             fullWidth/>
 
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={this.handleClose} color="primary" variant="contained">
-              Add
-            </Button>
+            <Button onClick={this.handleClose} color="primary"> Cancel</Button>
+            <Button onClick={this.handleSubmit} color="primary" variant="contained">Add</Button>
           </DialogActions>
         </Dialog>
       </div>

@@ -14,6 +14,8 @@ import Button from '@material-ui/core/Button';
 
 import InputAdornment from '@material-ui/core/InputAdornment';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import { Link } from 'react-router-dom'
+
 
 
 
@@ -39,10 +41,11 @@ const styles = theme => ({
 
   class InputAdornments extends React.Component {
     state = {
-      amount: '',
+      username: '',
+      company: '',
+      email: '',
+      regNumber: '',
       password: '',
-      weight: '',
-      weightRange: '',
       showPassword: false,
     };
   
@@ -65,7 +68,8 @@ const styles = theme => ({
         <Grid item sm></Grid>
         <Grid item sm>
         <Paper className={classes.paper}>
-        
+        <Typography  variant="h6" align="center" color="primary"> + Add an account</Typography>
+
         <TextField
                 id="Username"
                 variant="filled"
@@ -142,8 +146,8 @@ const styles = theme => ({
 
 <Button variant="contained" size="large" color="primary" className={classes.margin} fullWidth>Register</Button>
     <Typography  align="center"> I have an account already</Typography>
-    <Typography align="center"> <Button color="primary">LOGIN NOW</Button></Typography>
-    
+    <Typography align="center"><Link to='/Login'> <Button color="primary">LOGIN NOW</Button></Link></Typography>
+
 
         </Paper>
         </Grid>

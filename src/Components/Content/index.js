@@ -21,16 +21,15 @@ const styles = theme => ({
 });
 
 
-export default withStyles(styles)(({classes}) => 
-
+export default withStyles(styles)(({classes, onCreateTransaction, transactions, onDelete, onMakePayment}) => 
     <div className={classes.root}>
     <div className={classes.toolbar} />
         <Sidemenu />
         <div className={classes.content}>
             <div className={classes.toolbar} />
             <Search />
-            <Table />
-            <Dialog />
+            <Table transactions={transactions}  onDelete={onDelete} onMakePayment={onMakePayment}/>
+            <Dialog onCreate={onCreateTransaction}/>
         </div>
     </div>
 )

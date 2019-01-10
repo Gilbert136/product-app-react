@@ -4,12 +4,15 @@ import SignUser  from '../SignUser/';
 
 
 export default class extends Component {
+
+
      
   render() {
-    const { match } = this.props;
+    const { match, onSubmit } = this.props;
+    
     return <Fragment>
         <HeaderSimple />
-        <SignUser {...match }/>
+        <SignUser {...match } onSubmit = {onSubmit}/>
     </Fragment>
   }
 }

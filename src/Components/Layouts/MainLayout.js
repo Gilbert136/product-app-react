@@ -6,27 +6,47 @@ import Content  from '../Content/';
 export default class extends Component {
 
     state ={
-        user : {
-            username: 'Theresah',
-            password: '',
-            weight: '',
-            weightRange: '',
-            showPassword: false,
-        }
+        currentUser : {
+            username: '',
+        },
+        transactions : [
+            { provider: 'Visa Card', amount: '483', reference: 'B43545', account: '499320', narration: 'Good services', paid: false }
+        ]
     }
 
+
     componentDidMount(){
-        let state = this.state;
-        state.user.username = this.props.match.params.username;
-        this.setState({state})
+        const { currentUser } = this.state;
+        const { user } = this.props;
+        currentUser.username = user.username;
+        this.setState({currentUser})
+    }
+
+    handleTransaction = (transaction) => {
+        this.setState(({transactions})=> ({
+            transactions : [...transactions, transaction]
+        }))
+        console.log(transaction)
+    }
+
+    handleDelete = (account) => {
+        this.setState(({transactions}) => ({
+            transactions: transactions.filter(ot => {return ot.account !== account })
+        }))
+    }
+
+    handlePayment = (account, value) => {
+        this.setState(({transactions}) => ({
+            transactions: transactions.map(ot => {if(ot.account === account){ ot.paid = value;} return ot})
+        }))
     }
 
     render() {
-        const { user } = this.state;
+        const { currentUser, transactions } = this.state;
 
         return <Fragment>
-        <Header { ...user } />
-        <Content />
+        <Header { ...currentUser }  />
+        <Content transactions={transactions} onCreateTransaction={this.handleTransaction} onDelete={this.handleDelete} onMakePayment={this.handlePayment}/>
         </Fragment>
     }
 }

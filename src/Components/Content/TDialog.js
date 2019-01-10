@@ -42,8 +42,10 @@ class FullScreenDialog extends React.Component {
     this.setState({ open: false });
   };
 
+
   render() {
-    const { classes } = this.props;
+    const { classes, transaction, onDelete, onMakePayment } = this.props;
+
     return (
       <div>
         <IconButton onClick={this.handleClickOpen}> <Visibility /></IconButton>
@@ -62,41 +64,37 @@ class FullScreenDialog extends React.Component {
               <Typography variant="h6" color="inherit" className={classes.flex}>
                 Transaction
               </Typography>
-              <Button color="inherit" onClick={this.handleClose}>
+              <Button color="inherit" onClick={()=>{ onMakePayment(transaction.account, true)} }>
                 Make Payment
               </Button>
-              <Button color="inherit" onClick={this.handleClose}>
+              <Button color="inherit" onClick={()=>{ onDelete(transaction.account)} }>
                 Delete
               </Button>
             </Toolbar>
           </AppBar>
           <List>
             <ListItem button>
-              <ListItemText primary="Transaction Identification" secondary="ID3847563" />
+              <ListItemText primary="Pay Provider" secondary={transaction.provider} />
             </ListItem>
             <Divider />
             <ListItem button>
-              <ListItemText primary="Pay Provider" secondary="MTN Momo" />
+              <ListItemText primary="Amount(cedis)" secondary={transaction.amount} />
             </ListItem>
             <Divider />
             <ListItem button>
-              <ListItemText primary="Amount(cedis)" secondary="600" />
+              <ListItemText primary="Reference Number" secondary={transaction.reference} />
             </ListItem>
             <Divider />
             <ListItem button>
-              <ListItemText primary="Reference Number" secondary="IR48984DE" />
+              <ListItemText primary="Account Number" secondary={transaction.account} />
             </ListItem>
             <Divider />
             <ListItem button>
-              <ListItemText primary="Account Number" secondary="38489EFJJUI8848399" />
+              <ListItemText primary="Narration" secondary={transaction.narration} />
             </ListItem>
             <Divider />
             <ListItem button>
-              <ListItemText primary="Narration" secondary="Company transaction platform" />
-            </ListItem>
-            <Divider />
-            <ListItem button>
-              <ListItemText primary="Paid/Not paid" secondary="Not Paid" />
+              <ListItemText primary="Paid/Not paid" secondary={transaction.paid ? "Paid" : "Not paid" }/>
             </ListItem>
             <Divider />
           </List>

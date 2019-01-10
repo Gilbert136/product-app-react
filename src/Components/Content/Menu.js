@@ -3,6 +3,10 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { Link } from 'react-router-dom'
+import Typography from '@material-ui/core/Typography';
+
+
 
 const options = [
   'Sign out',
@@ -52,7 +56,8 @@ class LongMenu extends React.Component {
         >
           {options.map(option => (
             <MenuItem key={option} selected={option === 'Pyxis'} onClick={this.handleClose}>
-              {option}
+              
+              <Link to='/Login'><Typography align="center">{option}</Typography></Link>
             </MenuItem>
           ))}
         </Menu>
