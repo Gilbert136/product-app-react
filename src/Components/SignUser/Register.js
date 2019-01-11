@@ -100,7 +100,7 @@ const styles = theme => ({
   
     render() {
       const {
-        newUser: { username, company, email, regNumber,  password, conpassword, showPassword},
+        newUser: { username, company, email, regNumber,  password, conpassword},
         newuserError: { usernameError, companyError, emailError, regError, passwordError, conpasswordError}}  = this.state;
       const { classes } = this.props;
 

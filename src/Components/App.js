@@ -39,7 +39,7 @@ export default class extends Component {
         <Route path='/:username' render={(props)=><div> are you</div>}/> */}
         
         <Route exact path='/' render={(props)=><SimpleLayout {...props} onSubmit={this.handleSubmit}/>}></Route>
-        <Route path='/:username/Transaction' render={()=><MainLayout user = {user}/>}></Route>
+        <Route path='/:username/Transaction' render={(props)=><MainLayout {...props} user = {user}/>}></Route>
     
         <Route path='/Login' render={(props)=><SimpleLayout {...props} onSubmit={this.handleSubmit} />}></Route>
         <Route path='/Register' render={(props)=><SimpleLayout {...props}/>}></Route>

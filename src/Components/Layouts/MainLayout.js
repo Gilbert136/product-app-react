@@ -7,46 +7,72 @@ export default class extends Component {
 
     state ={
         currentUser : {
-            username: '',
+            username: 'Kobby',
         },
         transactions : [
             { provider: 'Visa Card', amount: '483', reference: 'B43545', account: '499320', narration: 'Good services', paid: false }
-        ]
+        ],
+        search: '',
+        filterTransaction : []
     }
 
 
     componentDidMount(){
-        const { currentUser } = this.state;
-        const { user } = this.props;
-        currentUser.username = user.username;
-        this.setState({currentUser})
+        console.log(this.props);
+        const { match:{params}} = this.props;
+        this.setState(({transactions})=>({ 
+            filterTransaction:transactions, currentUser : params
+        }))
     }
 
     handleTransaction = (transaction) => {
         this.setState(({transactions})=> ({
-            transactions : [...transactions, transaction]
+            transactions : [...transactions, transaction],
+            filterTransaction : [...transactions, transaction ] 
         }))
         console.log(transaction)
     }
 
     handleDelete = (account) => {
         this.setState(({transactions}) => ({
-            transactions: transactions.filter(ot => {return ot.account !== account })
+            transactions: transactions.filter(ot => {return ot.account !== account }),
+            filterTransaction: transactions.filter(ot => {return ot.account !== account })
         }))
     }
 
     handlePayment = (account, value) => {
         this.setState(({transactions}) => ({
-            transactions: transactions.map(ot => {if(ot.account === account){ ot.paid = value;} return ot})
+            transactions: transactions.map(ot => {if(ot.account === account){ ot.paid = value;} return ot}),
+            filterTransaction: transactions.map(ot => {if(ot.account === account){ ot.paid = value;} return ot}),
         }))
     }
 
+    handleSearch = ({target: {value}}) => {
+        const { transactions } = this.state
+
+        console.log(value);
+        if(value.length === 0){
+            this.setState(({transactions})=>({ filterTransaction:[...transactions]}))
+        }else{
+            let filterTrans = transactions.filter((trans)=>{return trans.provider.toLocaleLowerCase().indexOf(value.toLocaleLowerCase()) !== -1})
+            console.log(filterTrans)
+            this.setState({filterTransaction:filterTrans})
+        }
+    }
+    
+
     render() {
-        const { currentUser, transactions } = this.state;
+        const { currentUser, filterTransaction } = this.state;
 
         return <Fragment>
-        <Header { ...currentUser }  />
-        <Content transactions={transactions} onCreateTransaction={this.handleTransaction} onDelete={this.handleDelete} onMakePayment={this.handlePayment}/>
+        <Header user = {currentUser}  />
+        <Content 
+            transactions={filterTransaction} 
+            onCreateTransaction={this.handleTransaction} 
+            onDelete={this.handleDelete} 
+            onMakePayment={this.handlePayment}
+            updateSearch = {this.handleSearch}
+            />
         </Fragment>
     }
 }

@@ -20,11 +20,13 @@ const styles = {
 };
 
 function CustomizedInputBase(props) {
-  const { classes } = props;
+  const { classes, updateSearch } = props;
+
+
 
   return (
     <Paper className={classes.root} elevation={1}>
-      <InputBase className={classes.input} placeholder="Search Transactions..." />
+      <InputBase className={classes.input} onChange={updateSearch} placeholder="Search Transactions..." />
       <IconButton className={classes.iconButton} aria-label="Search">
         <SearchIcon />
       </IconButton>
