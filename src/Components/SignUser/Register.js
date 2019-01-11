@@ -41,25 +41,68 @@ const styles = theme => ({
 
   class InputAdornments extends React.Component {
     state = {
-      username: '',
-      company: '',
-      email: '',
-      regNumber: '',
-      password: '',
-      showPassword: false,
+      newUser: {
+        username: '',
+        company: '',
+        email: '',
+        regNumber: '',
+        password: '',
+        conpassword:'',
+        showPassword: false},
+      newuserError: {
+        usernameError: '',
+        companyError: '',
+        emailError: '',
+        regError: '',
+        passwordError: '',
+        conpasswordError: ''
+      }
     };
   
     handleChange = prop => event => {
-      this.setState({ [prop]: event.target.value });
+      this.setState({ newUser: {...this.state.newUser, [prop]:event.target.value} })
+     
     };
   
     handleClickShowPassword = () => {
       this.setState(state => ({ showPassword: !state.showPassword }));
     };
+
+    handleSubmit = () => {
+      const { newUser } = this.state;
+      const validate = this.handleValidation(newUser)
+
+      if(!validate){
+        this.setState({
+          newUser: { username: '', company: '', email: '', regNumber: '',  password: '', conpassword:'', showPassword: false},
+          newuserError: { usernameError: '', companyError: '', emailError: '', regError: '', passwordError: '', conpasswordError: ''}
+        })
+      }
+    }
+
+    handleValidation = (newUser) => {
+      let error = false;
+      const errors = {};
+
+      if(newUser.username.length === 0){ error = true; errors.usernameError = 'empty'} 
+      if(newUser.company.length === 0){ error = true; errors.companyError = 'empty'} 
+      if(newUser.email.indexOf('@') === -1){ error = true; errors.emailError = 'not Email'} 
+      if(newUser.regNumber.length === 0){ error = true; errors.regError = 'empty'} 
+      if(newUser.password.length === 0){ error = true; errors.passwordError = 'empty'} 
+      if(newUser.conpassword !== newUser.password){ error = true; errors.conpasswordError = 'password not the same'} 
+
+      if(error){
+        this.setState({newuserError : errors })
+      }
+
+      return error
+    }
   
     render() {
-        const { classes } = this.props;
-    
+      const {
+        newUser: { username, company, email, regNumber,  password, conpassword, showPassword},
+        newuserError: { usernameError, companyError, emailError, regError, passwordError, conpasswordError}}  = this.state;
+      const { classes } = this.props;
 
 
   return (
@@ -75,14 +118,22 @@ const styles = theme => ({
                 variant="filled"
                 className={classNames(classes.margin, classes.textField)}
                 label="Username"
+                onChange={this.handleChange('username')}
                 type="text"
+                value={username}
+                error={!!usernameError}
+                helperText={usernameError}
                 fullWidth/>
         <TextField
                 id="Company"
                 variant="filled"
                 className={classNames(classes.margin, classes.textField)}
                 label="Company"
+                onChange={this.handleChange('company')}
                 type="text"
+                value={company}
+                error={!!companyError}
+                helperText={companyError}
                 fullWidth/>
         <TextField
                 id="Email"
@@ -90,12 +141,20 @@ const styles = theme => ({
                 className={classNames(classes.margin, classes.textField)}
                 label="Email"
                 type="email"
+                value={email}
+                onChange={this.handleChange('email')}
+                error={!!emailError}
+                helperText={emailError}
                 fullWidth/>
         <TextField
                 id="Reg-No"
                 variant="filled"
                 className={classNames(classes.margin, classes.textField)}
                 label="Reg No."
+                onChange={this.handleChange('regNumber')}
+                error={!!regError}
+                helperText={regError}
+                value={regNumber}
                 type="text"
                 fullWidth/>
 <TextField
@@ -104,9 +163,11 @@ const styles = theme => ({
           variant="filled"
           type={this.state.showPassword ? 'text' : 'password'}
           label="Password"
-          value={this.state.password}
+          value={password}
           onChange={this.handleChange('password')}
           fullWidth
+          error={!!passwordError}
+          helperText={passwordError}
           InputProps={{
             endAdornment: (
               <InputAdornment variant="filled" position="end">
@@ -127,9 +188,11 @@ const styles = theme => ({
           variant="filled"
           type={this.state.showPassword ? 'text' : 'password'}
           label="Confirm password"
-          value={this.state.password}
-          onChange={this.handleChange('password')}
+          onChange={this.handleChange('conpassword')}
           fullWidth
+          value={conpassword}
+          error={!!conpasswordError}
+          helperText={conpasswordError}
           InputProps={{
             endAdornment: (
               <InputAdornment variant="filled" position="end">
@@ -144,7 +207,7 @@ const styles = theme => ({
           }}
         />
 
-<Button variant="contained" size="large" color="primary" className={classes.margin} fullWidth>Register</Button>
+<Button variant="contained" size="large" color="primary" className={classes.margin } onClick={this.handleSubmit} fullWidth>Register</Button>
     <Typography  align="center"> I have an account already</Typography>
     <Typography align="center"><Link to='/Login'> <Button color="primary">LOGIN NOW</Button></Link></Typography>
 
