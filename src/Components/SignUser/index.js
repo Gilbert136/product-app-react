@@ -4,8 +4,8 @@ import Register from './Register';
 
 
 
-export default ({ url, onSubmit }) => 
+export default ({ match: {url}, loginSubmit, history, registerSubmit, auth, user }) => 
     <Fragment>
-        { url === '/Login' || url === '/' ? <Login onSubmit={onSubmit}/> : (url === '/Register' ? <Register /> : <div>Not Found</div>) }
+        { url === '/Login' || url === '/' ? <Login loginSubmit={loginSubmit} auth={auth} history={history} userValid = {user}/> : (url === '/Register' ? <Register registerSubmit={registerSubmit}/> : <div>Not Found</div>) }
     </Fragment>
 

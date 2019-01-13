@@ -8,11 +8,10 @@ export default class extends Component {
 
      
   render() {
-    const { match, onSubmit } = this.props;
-    
+    const { match, history, loginSubmit, registerSubmit, auth, user} = this.props;
     return <Fragment>
         <HeaderSimple />
-        <SignUser {...match } onSubmit = {onSubmit}/>
+        <SignUser match = {match} loginSubmit={loginSubmit} history={history} auth={auth} registerSubmit={registerSubmit} user = {user}/>
     </Fragment>
   }
 }

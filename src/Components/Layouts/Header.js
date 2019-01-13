@@ -25,7 +25,7 @@ export default withStyles(styles)(
     <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
             <IconButton aria-haspopup="true" color="inherit"> <WorkIcon /></IconButton>
-            <Typography variant="h5" color="inherit" noWrap> Proapp {user.username} </Typography>
+            <Typography variant="h5" color="inherit" noWrap> Proapp </Typography>
             <div className={classes.grow} />
             <Typography variant="h6" color="inherit" noWrap>{user.username}</Typography>
             <IconButton aria-haspopup="true" color="inherit"> <AccountCircle /></IconButton>

@@ -27,7 +27,7 @@ function ButtonAppBar(props) {
   const { classes } = props;
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="fixed">
         <Toolbar>
             <IconButton aria-haspopup="true" color="inherit"> <WorkIcon /></IconButton>
             <Typography variant="h5" color="inherit" noWrap> Proapp </Typography>

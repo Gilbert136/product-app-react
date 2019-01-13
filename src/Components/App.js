@@ -12,37 +12,43 @@ export default class extends Component {
       company: '',
       email: '',
       regNumber: '',
-    }
+    }, 
+    isAuthenticated: false,
+    users : []
   }
 
-  handleSubmit = (username, password)=> {
+  handleLoginSubmit = (username, password)=> {
     this.handleValidation({username:username, password:password})
   }
 
   handleValidation = (user) => {
-    this.setState({user:{...user, company:'', email:'', regNumber:''}})
-    return <Redirect to="/Transaction"/>
+    const {users} = this.state;
+
+    if((user.username.length !== 0) && (user.password.length !== 0)){
+      let userValid = users.filter((regUser)=>{return ((regUser.username === user.username) && (regUser.password === user.password))})
+      if(userValid.length){
+        this.setState({user:userValid, isAuthenticated:true});
+      }
+      
+    }
   }
 
+  handleRegisterSubmit = (user) => {
+    this.setState(({users}) => ( {users : [...users, user]}))
+
+  }
 
   render() {
-    const {user} = this.state;
-
+    const {isAuthenticated, user} = this.state;
     return <BrowserRouter>
       <Fragment>
         <CssBaseline />
-        {/* <Header /> */}
 
-        {/* <Route exact path='/' render={(props)=><div>home</div>}/>
-        <Route path='/Login' render={(props)=><div>how are you</div>}/>
-        <Route path='/Register' render={(props)=><div>how you</div>}/>
-        <Route path='/:username' render={(props)=><div> are you</div>}/> */}
-        
         <Route exact path='/' render={(props)=><SimpleLayout {...props} onSubmit={this.handleSubmit}/>}></Route>
         <Route path='/:username/Transaction' render={(props)=><MainLayout {...props} user = {user}/>}></Route>
     
-        <Route path='/Login' render={(props)=><SimpleLayout {...props} onSubmit={this.handleSubmit} />}></Route>
-        <Route path='/Register' render={(props)=><SimpleLayout {...props}/>}></Route>
+        <Route path='/Login' render={(props)=><SimpleLayout {...props} loginSubmit={this.handleLoginSubmit} auth={ isAuthenticated} user = {user}/>}></Route>
+        <Route path='/Register' render={(props)=><SimpleLayout {...props} registerSubmit={this.handleRegisterSubmit} />}></Route>
       </Fragment>
     </BrowserRouter>
   }

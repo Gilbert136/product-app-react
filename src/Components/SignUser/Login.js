@@ -38,16 +38,14 @@ const styles = theme => ({
 
 
   class InputAdornments extends React.Component {
-    state = {
-      username: '',
-      password: '',
-      showPassword: false,
-      usernameError: '',
-      passwordError: '',
+    state = { 
+      user : {username: '', password: ''},
+      userError : { usernameError: '', passwordError: ''},
+      showPassword: false, 
     };
   
     handleChange = prop => event => {
-      this.setState({ [prop]: event.target.value });
+      this.setState({ user: { ...this.state.user, [prop]: event.target.value }});
     };
   
     handleClickShowPassword = () => {
@@ -55,16 +53,14 @@ const styles = theme => ({
     };
 
     handleSubmit = () => {
-      const { username, password } = this.state;
+     
+      const { user: {username, password} } = this.state;
       const validate = this.handleValidation(username, password);
 
       if(!validate){
-        this.props.onSubmit(username, password)
-        this.setState({username: '',
-        password: '',
-        showPassword: false,
-        usernameError: '',
-        passwordError: '',})
+        this.props.loginSubmit(username, password)
+        const {auth} = this.props;
+        // this.setState({user:{username: '', password: ''}, showPassword: false, userError:{usernameError: '', passwordError: ''}})
       }
     }
 
@@ -77,27 +73,25 @@ const styles = theme => ({
       
       //i have to reset the whole state with new object
       if(error){
-        this.setState({
-          ...this.state, 
-          ...errors
-        })
+        this.setState({userError : errors })
       }
-  
       return error
-
     }
 
   
     render() {
-        const { classes } = this.props;
-        const { username, password, showPassword, usernameError, passwordError } = this.state;
-
+        const { classes, auth, history, userValid} = this.props;
+        const { user : {username, password} , showPassword, userError:{usernameError, passwordError }} = this.state;
+        console.log(userValid[0])
+        console.log(auth);
+        if(auth){history.push(`/${userValid[0].username}/Transaction`)}
+       
 
   return (
 
     <Grid container>
-        <Grid item sm></Grid>
-        <Grid item sm>
+        <Grid item sm={2}></Grid>
+        <Grid item sm={8}>
         <Paper className={classes.paper}>
         <Typography align="center"> <IconButton><AccountCircle color="primary" style={{ fontSize: 120 }} /></IconButton></Typography>
 
@@ -127,7 +121,7 @@ const styles = theme => ({
                     endAdornment: (
                       <InputAdornment variant="filled" position="end">
                         <IconButton aria-label="Toggle password visibility" onClick={this.handleClickShowPassword}>
-                          {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
                         </IconButton>
                       </InputAdornment>
                     ),
@@ -141,7 +135,7 @@ const styles = theme => ({
 
         </Paper>
         </Grid>
-        <Grid item sm></Grid>
+        <Grid item sm={2}></Grid>
     </Grid>
   );
 }}
